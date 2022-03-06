@@ -222,5 +222,77 @@ TEST_CASE("1 molecule: straight wall collisions") {
       REQUIRE(exp_vel == mol_after.GetVelocity());
     }
   }
+}
+
+
+TEST_CASE("1 molecule: angled wall collisions") {
+
+  SECTION("AdvanceOneFrame: x angled wall collision") {
+    SECTION("Lower x boundary") {
+      vec2 position(110, 150);
+      vec2 velocity(-3, -2);
+      Molecule init_mol(position, velocity, "orange", 10);
+      GasContainer container(vector<Molecule>{init_mol});
+
+      container.AdvanceOneFrame();
+
+      vec2 exp_pos(113, 148);
+      vec2 exp_vel(3, -2);
+      Molecule mol_after = container.GetMolecules().at(0);
+
+      REQUIRE(exp_pos == mol_after.GetPosition());
+      REQUIRE(exp_vel == mol_after.GetVelocity());
+    }
+
+    SECTION("Upper x boundary") {
+      vec2 position(590, 150);
+      vec2 velocity(2, -1.5);
+      Molecule init_mol(position, velocity, "orange", 10);
+      GasContainer container(vector<Molecule>{init_mol});
+
+      container.AdvanceOneFrame();
+
+      vec2 exp_pos(588, 148.5);
+      vec2 exp_vel(-2, -1.5);
+      Molecule mol_after = container.GetMolecules().at(0);
+
+      REQUIRE(exp_pos == mol_after.GetPosition());
+      REQUIRE(exp_vel == mol_after.GetVelocity());
+    }
+  }
+
+  SECTION("AdvanceOneFrame: y angled wall collision") {
+    SECTION("Lower y boundary") {
+      vec2 position(150, 110);
+      vec2 velocity(2.5, -1);
+      Molecule init_mol(position, velocity, "orange", 10);
+      GasContainer container(vector<Molecule>{init_mol});
+
+      container.AdvanceOneFrame();
+
+      vec2 exp_pos(152.5, 111);
+      vec2 exp_vel(2.5, 1);
+      Molecule mol_after = container.GetMolecules().at(0);
+
+      REQUIRE(exp_pos == mol_after.GetPosition());
+      REQUIRE(exp_vel == mol_after.GetVelocity());
+    }
+
+    SECTION("Upper y boundary") {
+      vec2 position(150, 390);
+      vec2 velocity(-3, 2.5);
+      Molecule init_mol(position, velocity, "orange", 10);
+      GasContainer container(vector<Molecule>{init_mol});
+
+      container.AdvanceOneFrame();
+
+      vec2 exp_pos(147, 387.5);
+      vec2 exp_vel(-3, -2.5);
+      Molecule mol_after = container.GetMolecules().at(0);
+
+      REQUIRE(exp_pos == mol_after.GetPosition());
+      REQUIRE(exp_vel == mol_after.GetVelocity());
+    }
+  }
 
 }
