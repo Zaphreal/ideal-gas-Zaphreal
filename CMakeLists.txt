@@ -40,7 +40,7 @@ FetchContent_Declare(
 FetchContent_GetProperties(catch2)
 if(NOT catch2_POPULATED)
     FetchContent_Populate(catch2)
-    add_library(catch2 INTERFACE)
+    add_library(catch2 INTERFACE include/molecule.h src/molecule.cpp src/molecule.cpp include/molecule.h)
     target_include_directories(catch2 INTERFACE ${catch2_SOURCE_DIR}/single_include)
 endif()
 
@@ -50,9 +50,11 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND SOURCE_FILES    src/gas_container.cc
-                            src/gas_simulation_app.cc)
+                            src/gas_simulation_app.cc
+                            src/molecule.cpp)
 
-list(APPEND TEST_FILES tests/rename_this_test_file.cc)
+list(APPEND TEST_FILES tests/test_gas_container.cc
+                       tests/test_molecule.cc)
 
 ci_make_app(
         APP_NAME        gas-simulation
