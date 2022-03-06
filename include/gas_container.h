@@ -33,6 +33,18 @@ class GasContainer {
    */
   GasContainer();
 
+  /**
+   * Creates a GasContainer from a vector of molecules. Any molecules whose
+   * positions or velocities are outside of the container's limits will be
+   * pushed into the container.
+   *
+   * @param molecules a vector of Molecules
+   */
+  explicit GasContainer(const vector<Molecule>& molecules);
+
+  //==========[Getters]===========
+
+  vector<Molecule> GetMolecules();
 
   //==========[Methods]===========
 

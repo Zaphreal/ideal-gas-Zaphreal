@@ -20,6 +20,44 @@ GasContainer::GasContainer() {
 }
 
 
+GasContainer::GasContainer(const vector<Molecule>& molecules) {
+
+  for (const Molecule& molecule : molecules) {
+    vec2 position = molecule.GetPosition();
+    vec2 velocity = molecule.GetVelocity();
+
+    if (position.x < kTopLeft.x || position.y < kTopLeft.y) {
+      position = kTopLeft;
+    }
+    else if (position.x > kBottomRight.x || position.y > kBottomRight.y) {
+      position = kBottomRight;
+    }
+
+    if (velocity.x < kMinVelocity) {
+      velocity.x = kMinVelocity;
+    } else if (velocity.x > kMaxVelocity) {
+      velocity.x = kMaxVelocity;
+    }
+
+    if (velocity.y < kMinVelocity) {
+      velocity.y = kMinVelocity;
+    } else if (velocity.y > kMaxVelocity) {
+      velocity.y = kMaxVelocity;
+    }
+
+    molecules_.emplace_back(position, velocity, molecule.GetColor(),
+                            molecule.GetRadius());
+  }
+}
+
+
+//==========[Getters]============
+
+vector<Molecule> GasContainer::GetMolecules() {
+  return molecules_;
+}
+
+
 //==========[Public Methods]===========
 
 void GasContainer::Display() const {
