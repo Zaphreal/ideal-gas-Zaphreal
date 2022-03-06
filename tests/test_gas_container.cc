@@ -389,3 +389,35 @@ TEST_CASE("2 molecules: basic collision") {
 }
 
 
+TEST_CASE("2 molecules: advanced collision") {
+  Molecule mol1(vec2(120, 120), vec2(0.5, 0.3),
+                "red", 1);
+  Molecule mol2(vec2(121.4, 121.4), vec2(-0.1, -0.4),
+                "red", 1);
+
+  GasContainer container(vector<Molecule>{mol1, mol2});
+
+  container.AdvanceOneFrame();
+
+  vec2 exp_pos1(119.85, 119.65);
+  vec2 exp_vel1(-0.150, -0.350);
+  vec2 exp_pos2(121.95, 121.65);
+  vec2 exp_vel2(0.55, 0.25);
+
+  vector<Molecule> molecules = container.GetMolecules();
+
+  REQUIRE(exp_pos1.x == Approx(molecules.at(0).GetPosition().x));
+  REQUIRE(exp_pos1.y == Approx(molecules.at(0).GetPosition().y));
+  REQUIRE(exp_vel1.x == Approx(molecules.at(0).GetVelocity().x));
+  REQUIRE(exp_vel1.y == Approx(molecules.at(0).GetVelocity().y));
+
+  REQUIRE(exp_pos2.x == Approx(molecules.at(1).GetPosition().x));
+  REQUIRE(exp_pos2.y == Approx(molecules.at(1).GetPosition().y));
+  REQUIRE(exp_vel2.x == Approx(molecules.at(1).GetVelocity().x));
+  REQUIRE(exp_vel2.y == Approx(molecules.at(1).GetVelocity().y));
+}
+
+
+
+
+
