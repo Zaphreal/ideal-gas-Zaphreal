@@ -1,8 +1,12 @@
 #pragma once
 
+#include <random>
 #include "cinder/gl/gl.h"
+#include "molecule.h"
 
 using glm::vec2;
+using std::vector;
+using std::string;
 
 namespace idealgas {
 
@@ -12,8 +16,20 @@ namespace idealgas {
  */
 class GasContainer {
  public:
+  constexpr static size_t kInitNumMolecules = 15;
+  constexpr static float kDefaultRadius = 10.0;
+  constexpr static float kMinVelocity = -3.0;
+  constexpr static float kMaxVelocity = 3.0;
+
+  const vec2 kTopLeft = vec2(100, 100);
+  const vec2 kBottomRight = vec2(600, 400);
+  const ci::Color kDefaultMoleculeColor = "orange";
+  const ci::Color kBorderColor = "white";
+
+  //=========[Constructors]========
+
   /**
-   * TODO: Add more parameters to this constructor, and add documentation.
+   * Creates a default GasContainer
    */
   GasContainer();
 
@@ -29,11 +45,31 @@ class GasContainer {
   void AdvanceOneFrame();
 
  private:
+  vector<Molecule> molecules_;
+
   /**
-   * This variable is just for the purposes of demonstrating how to make a shape move
-   * across a screen. Please remove it once you start working on your code.
+   * Adjusts the X position of a molecule according to its velocity
+   * and container walls
+   * @param molecule the Molecule to handle movement for
    */
-  int dummy_variable_ = 0;
+  void HandleXMovement(Molecule& molecule) const;
+
+  /**
+   * Adjusts the Y position of a molecule according to its velocity
+   * and container walls
+   * @param molecule the Molecule to handle movement for
+   */
+  void HandleYMovement(Molecule& molecule) const;
+
+  /**
+   * Gives a pseudo-random vec2 between the upper and lower bounds
+   *
+   * @param lower_bound a vec2 containing lower bound coords
+   * @param upper_bound a vec2 containing upper bound coords
+   * @return a pseudo-random vec2 between the provided bounds
+   */
+  static vec2 GetRandomVec2(const vec2& lower_bound, const vec2& upper_bound);
+
 };
 
 }  // namespace idealgas
