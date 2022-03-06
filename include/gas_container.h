@@ -33,6 +33,9 @@ class GasContainer {
    */
   GasContainer();
 
+
+  //==========[Methods]===========
+
   /**
    * Displays the container walls and the current positions of the particles.
    */
@@ -46,6 +49,15 @@ class GasContainer {
 
  private:
   vector<Molecule> molecules_;
+
+  /**
+   * Adjusts the velocities of the current molecule and any molecules
+   * it might collide with according to the equation of 2d elastic collisions
+   *
+   * @param molecule the Molecule to handle movement for
+   * @param idx the molecule's index within the molecules vector
+   */
+  void HandleCollision(Molecule& molecule, unsigned int curr_idx);
 
   /**
    * Adjusts the X position of a molecule according to its velocity
@@ -69,6 +81,19 @@ class GasContainer {
    * @return a pseudo-random vec2 between the provided bounds
    */
   static vec2 GetRandomVec2(const vec2& lower_bound, const vec2& upper_bound);
+
+  /**
+   * Calculates post-collision velocity of a target molecule using 2d elastic
+   * collision formula
+   *
+   * @param v1 velocity of target molecule
+   * @param v2 velocity of collided molecule
+   * @param x1 position of target molecule
+   * @param x2 position of collided molecule
+   * @return a vec2 of the post-collision velocity of the target molecule
+   */
+  static vec2 GetCollisionVelocity(const vec2& v1, const vec2& v2,
+                                   const vec2& x1, const vec2& x2);
 
 };
 
