@@ -107,19 +107,6 @@ class GasContainer {
   static vec2 GetCollisionVelocity(const vec2& v1, const vec2& v2,
                                    const vec2& x1, const vec2& x2);
 
-  /**
-   * Calculates the exact time of when the collision would occur between two
-   * molecules
-   *
-   * @param v1 velocity of target molecule
-   * @param v2 velocity of collided molecule
-   * @param x1 position of target molecule
-   * @param x2 position of collided molecule
-   * @return the exact time of collision between the two molecules
-   */
-  static float GetCollisionTime(const vec2 &v1, const vec2 &v2,
-                                const vec2 &x1, const vec2 &x2,
-                                float r1, float r2);
 };
 
 }  // namespace idealgas

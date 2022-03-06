@@ -109,10 +109,6 @@ void GasContainer::HandleCollision(Molecule& molecule, unsigned int curr_idx) {
     if (glm::distance(pos1, pos2) < r1 + r2 &&
         glm::dot(vel1 - vel2, pos1 - pos2) < 0) {
 
-      float percent = GetCollisionTime(vel1, vel2,pos1,
-                                       pos2, r1, r2);
-      pos1 += vel1 * percent;
-      pos2 += vel2 * percent;
       molecule.SetVelocity(GetCollisionVelocity(vel1, vel2,
                                                 pos1, pos2));
       molecule2.SetVelocity(GetCollisionVelocity(vel2, vel1,
@@ -197,38 +193,6 @@ vec2 GasContainer::GetCollisionVelocity(const vec2& v1, const vec2& v2,
   vec2 x_diff = x1-x2;
   return v1 - ((glm::dot(v_diff, x_diff) /
       pow(glm::length(x_diff), 2)) * (x_diff));
-}
-
-
-float GasContainer::GetCollisionTime(const vec2& v1, const vec2& v2,
-                                      const vec2& x1, const vec2& x2,
-                                      float r1, float r2) {
-  // Formula
-  // a * t^2 + 2b * t + c = 0
-  // Where
-  // a = dot product of diff of velocity with itself
-  // b = dot product of diff of velocity with diff of position
-  // c = dot product of diff of position with itself - (r1+r2)^2
-  // Solved for t
-  // Solution derived from:
-  // https://stackoverflow.com/questions/43577298/
-  // calculating-collision-times-between-two-circles-physics
-  double a = glm::dot(v2-v1, v2-v1);
-  double b = glm::dot(v2-v1, x2-x1);
-  double c = glm::dot(x2-x1, x2-x1) - pow(r1 + r2, 2);
-
-  double inside = b*b - a*c;
-  if (inside < 0) {
-    return 0;
-  }
-  auto t1 = float((-b + sqrt(inside)) / a);
-  auto t2 = float((-b + sqrt(inside)) / a);
-
-  // If collision occurred in the past, return closest to present
-  if (t1 < 0 && t2 < 0) {
-    return t1 > t2 ? t1 : t2;
-  }
-  return t1 < t2 ? t1 : t2;
 }
 
 }  // namespace idealgas
