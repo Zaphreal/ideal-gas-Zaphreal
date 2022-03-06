@@ -365,3 +365,27 @@ TEST_CASE("1 molecule: corner collisions") {
 }
 
 
+TEST_CASE("2 molecules: basic collision") {
+  Molecule mol1(vec2(120, 120), vec2(0.1, 0),
+                "red", 1);
+  Molecule mol2(vec2(121.4, 121.4), vec2(-0.1, 0),
+                "red", 1);
+
+  GasContainer container(vector<Molecule>{mol1, mol2});
+
+  container.AdvanceOneFrame();
+
+  vec2 exp_pos1(120, 119.9);
+  vec2 exp_vel1(0, -0.1);
+  vec2 exp_pos2(121.4, 121.5);
+  vec2 exp_vel2(0, 0.1);
+
+  vector<Molecule> molecules = container.GetMolecules();
+
+  REQUIRE(exp_pos1 == molecules.at(0).GetPosition());
+  REQUIRE(exp_vel1 == molecules.at(0).GetVelocity());
+  REQUIRE(exp_pos2 == molecules.at(1).GetPosition());
+  REQUIRE(exp_vel2 == molecules.at(1).GetVelocity());
+}
+
+
