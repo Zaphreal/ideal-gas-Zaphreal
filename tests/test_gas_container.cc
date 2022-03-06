@@ -297,3 +297,71 @@ TEST_CASE("1 molecule: angled wall collisions") {
 }
 
 
+TEST_CASE("1 molecule: corner collisions") {
+
+  SECTION("(Lower x, Lower y) corner") {
+    vec2 position(110, 110);
+    vec2 velocity(-3, -2);
+    Molecule init_mol(position, velocity, "orange", 10);
+    GasContainer container(vector<Molecule>{init_mol});
+
+    container.AdvanceOneFrame();
+
+    vec2 exp_pos(113, 112);
+    vec2 exp_vel(3, 2);
+    Molecule mol_after = container.GetMolecules().at(0);
+
+    REQUIRE(exp_pos == mol_after.GetPosition());
+    REQUIRE(exp_vel == mol_after.GetVelocity());
+  }
+
+  SECTION("(Lower x, Upper y) corner") {
+    vec2 position(110, 390);
+    vec2 velocity(-2, 1.5);
+    Molecule init_mol(position, velocity, "orange", 10);
+    GasContainer container(vector<Molecule>{init_mol});
+
+    container.AdvanceOneFrame();
+
+    vec2 exp_pos(112, 388.5);
+    vec2 exp_vel(2, -1.5);
+    Molecule mol_after = container.GetMolecules().at(0);
+
+    REQUIRE(exp_pos == mol_after.GetPosition());
+    REQUIRE(exp_vel == mol_after.GetVelocity());
+  }
+
+  SECTION("(Upper x, Lower y) corner") {
+    vec2 position(590, 110);
+    vec2 velocity(2.5, -1);
+    Molecule init_mol(position, velocity, "orange", 10);
+    GasContainer container(vector<Molecule>{init_mol});
+
+    container.AdvanceOneFrame();
+
+    vec2 exp_pos(587.5, 111);
+    vec2 exp_vel(-2.5, 1);
+    Molecule mol_after = container.GetMolecules().at(0);
+
+    REQUIRE(exp_pos == mol_after.GetPosition());
+    REQUIRE(exp_vel == mol_after.GetVelocity());
+  }
+
+  SECTION("(Upper x, Upper y) corner") {
+    vec2 position(590, 390);
+    vec2 velocity(3, 2.5);
+    Molecule init_mol(position, velocity, "orange", 10);
+    GasContainer container(vector<Molecule>{init_mol});
+
+    container.AdvanceOneFrame();
+
+    vec2 exp_pos(587, 387.5);
+    vec2 exp_vel(-3, -2.5);
+    Molecule mol_after = container.GetMolecules().at(0);
+
+    REQUIRE(exp_pos == mol_after.GetPosition());
+    REQUIRE(exp_vel == mol_after.GetVelocity());
+  }
+}
+
+
